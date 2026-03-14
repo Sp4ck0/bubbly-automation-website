@@ -37,8 +37,8 @@ export default function RegisterPage() {
     try {
       await signIn("password", { email, password, flow: "signUp" });
       navigate("/");
-    } catch {
-      setError("Could not create account. That email may already be in use.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not create account.");
     } finally {
       setLoading(false);
     }
