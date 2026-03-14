@@ -74,7 +74,7 @@ export default function ProviderDetailPage() {
 
   useEffect(() => {
     if (existing) {
-      setApiKey(existing.apiKey ?? "");
+      // Never pre-fill the key — it's masked and would overwrite the real value
       setBaseUrl(existing.baseUrl ?? "");
     }
   }, [existing]);
@@ -94,7 +94,7 @@ export default function ProviderDetailPage() {
     setSuccess("");
     setSaving(true);
     try {
-      await upsert({ provider, apiKey, baseUrl: baseUrl || undefined });
+      await upsert({ provider, apiKey: apiKey || undefined, baseUrl: baseUrl || undefined });
       setSuccess("Credentials saved.");
     } catch {
       setError("Failed to save credentials.");
@@ -147,11 +147,13 @@ export default function ProviderDetailPage() {
               label={config.apiKeyLabel}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              required
+              required={!existing}
               fullWidth
               autoComplete="off"
-              helperText={config.apiKeyHint}
-              placeholder={existing ? "Enter new value to update" : ""}
+              helperText={existing
+                ? `Currently set (ends in ${existing.apiKey.slice(-4)}). Leave blank to keep existing.`
+                : config.apiKeyHint}
+              placeholder={existing ? "Leave blank to keep existing key" : ""}
             />
 
             {config.baseUrlLabel && (
