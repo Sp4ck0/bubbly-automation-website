@@ -4,7 +4,7 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/bubbly-automation/",
+  base: "/bubbly-automation-website/",
   resolve: {
     alias: {
       "@convex": path.resolve(__dirname, "src/_generated"),
