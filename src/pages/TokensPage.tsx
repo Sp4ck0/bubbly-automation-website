@@ -27,6 +27,8 @@ import AddIcon from "@mui/icons-material/Add";
 import BlockIcon from "@mui/icons-material/Block";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 type Token = NonNullable<ReturnType<typeof useQuery<typeof api.tokens.listTokens>>>[number];
 
@@ -42,6 +44,7 @@ export default function TokensPage() {
   const [creating, setCreating] = useState(false);
   const [newToken, setNewToken] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [tokenVisible, setTokenVisible] = useState(false);
 
   const handleCreate = async () => {
     if (!name.trim()) return;
@@ -52,6 +55,7 @@ export default function TokensPage() {
         expiresAt: expiresAt ? new Date(expiresAt).getTime() : undefined,
       });
       setNewToken(result.rawToken);
+      setTokenVisible(false);
       setName("");
       setExpiresAt("");
       setOpen(false);
@@ -101,14 +105,21 @@ export default function TokensPage() {
           sx={{ mb: 3 }}
           onClose={() => setNewToken(null)}
           action={
-            <Button
-              size="small"
-              startIcon={<ContentCopyIcon />}
-              onClick={handleCopy}
-              color="inherit"
-            >
-              {copied ? "Copied!" : "Copy"}
-            </Button>
+            <Box display="flex" gap={1}>
+              <Tooltip title={tokenVisible ? "Hide token" : "Show token"}>
+                <IconButton size="small" onClick={() => setTokenVisible((v) => !v)} color="inherit">
+                  {tokenVisible ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+                </IconButton>
+              </Tooltip>
+              <Button
+                size="small"
+                startIcon={<ContentCopyIcon />}
+                onClick={handleCopy}
+                color="inherit"
+              >
+                {copied ? "Copied!" : "Copy"}
+              </Button>
+            </Box>
           }
         >
           <Typography variant="body2" fontWeight={600} mb={1}>
@@ -119,7 +130,7 @@ export default function TokensPage() {
             fontFamily="monospace"
             sx={{ wordBreak: "break-all", bgcolor: "rgba(0,0,0,0.06)", p: 1, borderRadius: 1 }}
           >
-            {newToken}
+            {tokenVisible ? newToken : "•".repeat(64)}
           </Typography>
         </Alert>
       )}
