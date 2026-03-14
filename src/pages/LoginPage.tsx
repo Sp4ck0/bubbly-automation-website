@@ -24,6 +24,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log("isAuthenticated changed:", isAuthenticated);
     if (isAuthenticated) navigate("/");
   }, [isAuthenticated, navigate]);
 
@@ -32,9 +33,12 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      await signIn("password", { email, password, flow: "signIn" });
-    } catch {
-      setError("Invalid email or password.");
+      console.log("Calling signIn...");
+      const result = await signIn("password", { email, password, flow: "signIn" });
+      console.log("signIn result:", result);
+    } catch (err) {
+      console.error("signIn error:", err);
+      setError(err instanceof Error ? err.message : "Invalid email or password.");
     } finally {
       setLoading(false);
     }
