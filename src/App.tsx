@@ -3,6 +3,7 @@ import AuthGuard from "./components/AuthGuard";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ApiDocsPage from "./pages/ApiDocsPage";
 import DashboardPage from "./pages/DashboardPage";
 import TokensPage from "./pages/TokensPage";
 import ProvidersPage from "./pages/ProvidersPage";
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/tokens" element={<TokensPage />} />
         <Route path="/providers" element={<ProvidersPage />} />
         <Route path="/providers/:provider" element={<ProviderDetailPage />} />
+        <Route path="/api-docs" element={<ApiDocsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

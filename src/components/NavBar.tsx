@@ -12,6 +12,7 @@ export default function NavBar() {
     { label: "Dashboard", path: "/" },
     { label: "API Tokens", path: "/tokens" },
     { label: "Providers", path: "/providers" },
+    { label: "API Docs", path: "/api-docs" },
   ];
 
   return (
